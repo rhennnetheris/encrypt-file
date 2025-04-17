@@ -8,8 +8,8 @@ import (
 	"crypto/sha1"
 	"encoding/hex"
 	"io"
-	"io/ioutil"
 	"os"
+	"strings"
 
 	"golang.org/x/crypto/pbkdf2"
 )
@@ -19,7 +19,7 @@ func Encrypt(source string, password []byte) error {
 		return err
 	}
 
-	plaintext, err := ioutil.ReadFile(source)
+	plaintext, err := os.ReadFile(source)
 	if err != nil {
 		return err
 	}
@@ -48,7 +48,7 @@ func Encrypt(source string, password []byte) error {
 	// Append the nonce to the end of file
 	ciphertext = append(ciphertext, nonce...)
 
-	f, err := os.Create(source)
+	f, err := os.Create(source + ".enc")
 	if err != nil {
 		return err
 	}
@@ -97,7 +97,7 @@ func Decrypt(source string, password []byte) error {
 		return err
 	}
 
-	f, err := os.Create(source)
+	f, err := os.Create(strings.ReplaceAll(source, ".enc", ""))
 	if err != nil {
 		return err
 	}

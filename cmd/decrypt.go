@@ -1,6 +1,3 @@
-/*
-Copyright © 2025 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
@@ -34,8 +31,8 @@ func init() {
 	// and all subcommands, e.g.:
 	// decryptCmd.PersistentFlags().String("foo", "", "A help for foo")
 
-	encryptCmd.PersistentFlags().StringVarP(&password, "password", "p", "", "Password for authentication")
-	encryptCmd.PersistentFlags().StringVarP(&fileUrl, "url", "u", "", "File Url for encryption")
+	decryptCmd.PersistentFlags().StringVarP(&password, "password", "p", "", "Password for authentication")
+	decryptCmd.PersistentFlags().StringVarP(&fileUrl, "url", "u", "", "File Url for encryption")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
