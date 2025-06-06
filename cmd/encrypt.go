@@ -1,6 +1,3 @@
-/*
-Copyright © 2025 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
@@ -10,20 +7,21 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// encryptCmd represents the encrypt command
-var encryptCmd = &cobra.Command{
-	Use:   "encrypt",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+var (
+	encryptPassword string
+	encryptFileUrl  string
+	// encryptCmd represents the encrypt command
+	encryptCmd = &cobra.Command{
+		Use:   "encrypt",
+		Short: "文件加密",
+		Long: `这个文件加密应用可以对文件进行加密，加密后文件将无法被解密。
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		encrypt()
-	},
-}
+需要传入2个参数，一个是密钥，一个是文件路径。`,
+		Run: func(cmd *cobra.Command, args []string) {
+			encrypt()
+		},
+	}
+)
 
 func init() {
 	rootCmd.AddCommand(encryptCmd)
@@ -34,8 +32,8 @@ func init() {
 	// and all subcommands, e.g.:
 	// encryptCmd.PersistentFlags().String("foo", "", "A help for foo")
 
-	encryptCmd.PersistentFlags().StringVarP(&password, "password", "p", "", "Password for authentication")
-	encryptCmd.PersistentFlags().StringVarP(&fileUrl, "url", "u", "", "File Url for encryption")
+	encryptCmd.PersistentFlags().StringVarP(&encryptPassword, "password", "p", "", "Password for authentication")
+	encryptCmd.PersistentFlags().StringVarP(&encryptFileUrl, "url", "u", "", "File Url for encryption")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
@@ -43,17 +41,17 @@ func init() {
 }
 
 func encrypt() {
-	if len(password) == 0 {
+	if len(encryptPassword) == 0 {
 		fmt.Println("Password is required")
 		return
 	}
 
-	if len(fileUrl) == 0 {
+	if len(encryptFileUrl) == 0 {
 		fmt.Println("File Url is required")
 		return
 	}
 
-	err := filecrypt.Encrypt(fileUrl, []byte(password))
+	err := filecrypt.Encrypt(encryptFileUrl, []byte(encryptPassword))
 	if err != nil {
 		fmt.Println(err)
 	}

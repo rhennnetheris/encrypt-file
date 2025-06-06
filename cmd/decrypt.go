@@ -7,20 +7,21 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// decryptCmd represents the decrypt command
-var decryptCmd = &cobra.Command{
-	Use:   "decrypt",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+var (
+	decryptPassword string
+	decryptFileUrl  string
+	// decryptCmd represents the decrypt command
+	decryptCmd = &cobra.Command{
+		Use:   "decrypt",
+		Short: "文件解密",
+		Long: `这个文件解密应用可以对文件进行解密，对加密后文件解密。
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		decrypt()
-	},
-}
+需要传入2个参数，一个是密钥，一个是文件路径。`,
+		Run: func(cmd *cobra.Command, args []string) {
+			decrypt()
+		},
+	}
+)
 
 func init() {
 	rootCmd.AddCommand(decryptCmd)
@@ -31,8 +32,8 @@ func init() {
 	// and all subcommands, e.g.:
 	// decryptCmd.PersistentFlags().String("foo", "", "A help for foo")
 
-	decryptCmd.PersistentFlags().StringVarP(&password, "password", "p", "", "Password for authentication")
-	decryptCmd.PersistentFlags().StringVarP(&fileUrl, "url", "u", "", "File Url for encryption")
+	decryptCmd.PersistentFlags().StringVarP(&decryptPassword, "password", "p", "", "Password for authentication")
+	decryptCmd.PersistentFlags().StringVarP(&decryptFileUrl, "url", "u", "", "File Url for encryption")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
@@ -40,17 +41,17 @@ func init() {
 }
 
 func decrypt() {
-	if len(password) == 0 {
+	if len(decryptPassword) == 0 {
 		fmt.Println("Password is required")
 		return
 	}
 
-	if len(fileUrl) == 0 {
+	if len(decryptFileUrl) == 0 {
 		fmt.Println("File Url is required")
 		return
 	}
 
-	err := filecrypt.Decrypt(fileUrl, []byte(password))
+	err := filecrypt.Decrypt(decryptFileUrl, []byte(decryptPassword))
 	if err != nil {
 		fmt.Println(err)
 	}
